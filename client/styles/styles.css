@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+body {
+  margin: auto;
+  padding: 32px;
+  background-color: #000000;
+}
+
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.white-color {
+  color: white;
+}
+
+.primary-color {
+  color: #21b9c4;
+}
+
+.warning-color {
+  color: #bb2e2e;
+}
+
+.button-element {
+  padding: 16px;
+  width: 120px;
+  height: 46px;
+  background-color: #21b9c4;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.button-element:hover {
+  background-color: #5ec5ccc4;
+}
+
+.input-element-main {
+  display: flex;
+  flex-direction: column;
+  margin: 16px 0;
+}
+
+.input-element-main input {
+  width: 65%;
+  color: #ffff;
+  padding: 0.8rem;
+  border: none;
+  outline: none;
+  background-color: #353535c9;
+  border-radius: 5px;
+  margin: 8px 0;
+}
+
+.input-element-main input[type='email'] {
+  color: #808080;
+}
+
+.input-error {
+  height: 1.4rem;
+}
+
+.input-element-main small {
+  color: #ffff;
+}

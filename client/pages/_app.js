@@ -1,10 +1,14 @@
-// import 'bootstrap/dist/css/bootstrap.css';
+import '../styles/styles.css';
+import Head from 'next/head';
+import ApplicationLayout from '../components/ApplicationLayout/ApplicationLayout';
 
 export default ({ Component, pageProps }) => {
   return (
-    <div>
-      <h1>test?</h1>
+    <ApplicationLayout>
+      <Head>
+        <title>Microservices</title>
+      </Head>
       <Component {...pageProps} />
-    </div>
+    </ApplicationLayout>
   );
 };
