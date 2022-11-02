@@ -36,6 +36,10 @@ route.post(
 route.post('/signout', signOut);
 
 // https://ticketing.dev/api/users/currentuser
-route.get('/currentuser', [currentUserMiddleware, authMiddleware], currentUser);
+route.get(
+  '/currentuser',
+  [currentUserMiddleware /* authMiddleware */],
+  currentUser
+);
 
 export { route as authRoutes };

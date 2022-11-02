@@ -13,7 +13,7 @@ const SignupForm = () => {
   const [formState, setFormState] = useState(defaultState);
   const [errors, sendRequest] = useRequest({
     method: 'post',
-    url: 'https://ticketing.dev/api/users/signup',
+    url: '/api/users/signup',
     body: formState,
     onSuccess: () => Router.push('/'),
   });
