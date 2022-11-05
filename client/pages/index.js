@@ -1,9 +1,13 @@
 import React from 'react';
-import axios from 'axios';
+// import axiosClient from '../utils/axiosClient';
 
 const IndexScreen = ({ currentUser }) => {
-  console.log(currentUser, 'curreasdasdntUser');
-  return <div className='white-color'>Index Page</div>;
+  return (
+    <div className='white-color'>
+      <h3>{currentUser ? 'You are signed in' : 'You are NOT signed in'}</h3>
+      {currentUser && <small>{currentUser.email}</small>}
+    </div>
+  );
 };
 
 // getInitialProps is a special method that called when the server serve our html page. Therefor, this function will be executed ON the server.
@@ -15,33 +19,10 @@ const IndexScreen = ({ currentUser }) => {
 // http://NAMEOFSERVICE.NAMESPACE.srv.cluster.local
 // http://ingress-nginx-controller.ingress-nginx.svc.cluster.local
 
-IndexScreen.getInitialProps = async ({ req }) => {
-  // If will execute ON the server
-  // console.log(req.headers.cookie);
-  if (typeof window === 'undefined') {
-    try {
-      const { data } = await axios.get(
-        'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser',
-        {
-          headers: {
-            Host: 'ticketing.dev',
-          },
-        }
-      );
-      console.log(data, '!??!');
-      return data;
-    } catch (error) {
-      console.log(error.response.data.errors[0].message);
-      const test = error.response.data.errors[0].message;
-      return test;
-    }
-    // Else will execute ON the client (after re-navigate! remember? the first execute (if) will run inside the server)
-  } else {
-    console.log('??');
-    const { data } = await axios.get('/api/users/currentuser');
-    console.log(data, 'what?');
-    return data;
-  }
-};
+// IndexScreen.getInitialProps = async context => {
+//   const { data } = await axiosClient(context).get('/api/users/currentuser');
+//   console.log('???');
+//   return data;
+// };
 
 export default IndexScreen;

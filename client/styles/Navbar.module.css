@@ -1,0 +1,27 @@
+.navbar-main {
+  height: 65px;
+  width: 55%;
+  margin: 0 auto;
+  padding: 0 32px;
+  border-bottom: 1px solid #46464677;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 200;
+}
+
+.navbar-main a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+@media (max-width: 375px) {
+  .navbar-main li {
+    /* font-size: 0.8rem; */
+  }
+
+  .navbar-main a {
+    /* margin: 0 0.5rem; */
+  }
+}

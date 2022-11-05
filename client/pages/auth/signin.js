@@ -10,11 +10,11 @@ const defaultState = {
   password: '',
 };
 
-const SignupForm = () => {
+const SigninForm = () => {
   const [formState, setFormState] = useState(defaultState);
   const [errors, sendRequest] = useRequest({
     method: 'post',
-    url: '/api/users/signup',
+    url: '/api/users/signin',
     body: formState,
     onSuccess: () => Router.push('/'),
   });
@@ -29,7 +29,7 @@ const SignupForm = () => {
 
   return (
     <div className={styles['form-container']}>
-      <h3>Sign Up</h3>
+      <h3>Sign In</h3>
       <InputElement
         inputType={'text'}
         value={formState.email}
@@ -45,9 +45,9 @@ const SignupForm = () => {
         placeholder={'Your Password'}
       />
       {errors}
-      <ButtonElement title={'Submit'} onClick={onSubmit} />
+      <ButtonElement title={'Login'} onClick={onSubmit} />
     </div>
   );
 };
 
-export default SignupForm;
+export default SigninForm;
