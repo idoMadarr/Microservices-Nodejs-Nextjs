@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { sign, JwtPayload } from 'jsonwebtoken';
-import { BadRequestError } from '../errors/bad-request-error';
+import { BadRequestError } from '@adar-tickets/common';
 import { User } from '../models/User';
 
 export const signUp: RequestHandler = async (req, res, next) => {

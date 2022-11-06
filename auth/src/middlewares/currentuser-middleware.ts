@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
-import { DecodedPayload } from '../@types/express';
+import { DecodedPayload } from '../node-types';
 
 export const currentUserMiddleware = (
   req: Request,

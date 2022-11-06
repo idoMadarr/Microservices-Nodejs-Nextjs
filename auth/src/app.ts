@@ -6,8 +6,7 @@ import cookieSession from 'cookie-session';
 import 'express-async-errors';
 
 import { authRoutes } from './routes/routes';
-import { errorMiddleware } from './middlewares/error-middleware';
-import { NotFoundError } from './errors/not-found-error';
+import { errorMiddleware, NotFoundError } from '@adar-tickets/common';
 
 const app = express();
 app.set('trust proxy', true); // Extra implemention for ingress-nginx combined with cookie

@@ -1,9 +1,13 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
 import { signUp, signIn, signOut, currentUser } from '../controller/controller';
-import { validationMiddleware } from '../middlewares/validation-middleware';
 import { currentUserMiddleware } from '../middlewares/currentuser-middleware';
-import { authMiddleware } from '../middlewares/auth-middleware';
+import {
+  validationMiddleware,
+  // currentUserMiddleware, this is the problem!
+  // currentUserMiddleware,
+  authMiddleware,
+} from '@adar-tickets/common';
 
 const route = Router();
 
