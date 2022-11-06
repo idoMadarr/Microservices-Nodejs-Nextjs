@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Router from 'next/router';
+import Link from 'next/link';
 import InputElement from '../../components/UIElements/InputElement/InputElement';
 import ButtonElement from '../../components/UIElements/ButtonElement/ButtonElement';
 import useRequest from '../../hooks/useRequest';
@@ -38,7 +39,7 @@ const SigninForm = () => {
         placeholder={'Email Address'}
       />
       <InputElement
-        inputType={'text'}
+        inputType={'password'}
         value={formState.password}
         insertFunc={updateState.bind(this, 'password')}
         name={'password'}
@@ -46,6 +47,9 @@ const SigninForm = () => {
       />
       {errors}
       <ButtonElement title={'Login'} onClick={onSubmit} />
+      <p>
+        Dont have account yet? <Link href={'/auth/signup'}>Sign up</Link>
+      </p>
     </div>
   );
 };

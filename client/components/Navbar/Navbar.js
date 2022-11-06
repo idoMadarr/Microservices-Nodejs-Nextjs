@@ -4,12 +4,12 @@ import styles from '../../styles/Navbar.module.css';
 const Navbar = ({ currentUser }) => {
   const links = [
     !currentUser && {
-      label: 'Sign up',
-      href: '/auth/signup',
+      label: 'Login',
+      href: '/auth/signin',
     },
     !currentUser && {
-      label: 'Sign in',
-      href: '/auth/signin',
+      label: 'Register',
+      href: '/auth/signup',
     },
     currentUser && {
       label: 'Sign out',
@@ -19,19 +19,18 @@ const Navbar = ({ currentUser }) => {
 
   return (
     <nav className={styles['navbar-main']}>
-      <Link href={'/'}>GitTix</Link>
-      <ul style={{}}>
+      <Link href={'/'} style={{ fontSize: '1rem' }}>
+        GitTix
+      </Link>
+      <ul>
         {links.map(link => {
-          if (!link) return;
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              style={{ backgroundColor: 'red', margin: '0 8px' }}
-            >
-              {link.label}
-            </Link>
-          );
+          if (link) {
+            return (
+              <Link key={link.href} href={link.href}>
+                {link.label}
+              </Link>
+            );
+          }
         })}
       </ul>
     </nav>
