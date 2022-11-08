@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app } from '../app';
 import { autoSignin } from './setup';
 
-// NOTICE: Our browser & postman knows how to manage cookie
+// NOTICE: Our browser & postman knows how to manage cookie (auto)
 // on a contrary, supertest doesn't!
 it('returns response with user details', async () => {
   const cookie = await autoSignin();

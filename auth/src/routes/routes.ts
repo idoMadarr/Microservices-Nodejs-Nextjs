@@ -1,12 +1,10 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
 import { signUp, signIn, signOut, currentUser } from '../controller/controller';
-import { currentUserMiddleware } from '../middlewares/currentuser-middleware';
 import {
   validationMiddleware,
-  // currentUserMiddleware, this is the problem!
-  // currentUserMiddleware,
   authMiddleware,
+  currentUserMiddleware,
 } from '@adar-tickets/common';
 
 const route = Router();
@@ -40,10 +38,6 @@ route.post(
 route.post('/signout', signOut);
 
 // https://ticketing.dev/api/users/currentuser
-route.get(
-  '/currentuser',
-  [currentUserMiddleware /* authMiddleware */],
-  currentUser
-);
+route.get('/currentuser', [currentUserMiddleware], currentUser);
 
 export { route as authRoutes };
