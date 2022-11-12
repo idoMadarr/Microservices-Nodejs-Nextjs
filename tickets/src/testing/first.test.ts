@@ -1,13 +1,20 @@
 import request from 'supertest';
 import { app } from '../app';
 
-it('has a route handler listening to /api/tickets for post request', async () => {
-  const response = await request(app).post('/api/trade/tickets').send({});
-
-  expect(response.status).not.toEqual(404);
+it('can only be accessed if the user is signed in', async () => {
+  await request(app).post('/api/tickets/create-ticket').send({}).expect(401);
 });
 
-it('can only be accessed if the user is signed in', () => {});
+// it('returns any status code when user is logged in', async () => {
+//   const cookie = await autoSignin();
+//   const currentuserResponse = await request(app)
+//     .get('/api/users/currentuser')
+//     .set('Cookie', cookie)
+//     .send({})
+//     .expect(200);
+
+//   expect(currentuserResponse.body.currentUser.email).toEqual('test@test.com');
+// });
 
 it('return error if an invalide price was provided', () => {});
 

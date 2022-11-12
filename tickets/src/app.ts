@@ -15,7 +15,7 @@ app.use(
   })
 );
 
-app.use('/api/trade', ticketsRoutes);
+app.use('/api/tickets', ticketsRoutes);
 
 app.all('*', async () => {
   throw new NotFoundError();
