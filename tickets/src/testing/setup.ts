@@ -1,12 +1,9 @@
-// Generic implementation for creating a mongodb cache database - For tests only
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import request from 'supertest';
-import { app } from '../app';
 import mongoose from 'mongoose';
+import { sign } from 'jsonwebtoken';
 
 let mongoRepo: any;
 
-// Jest hook that run before our tests
 beforeAll(async () => {
   process.env.JWT_KEY = 'my_test_secret_key';
   mongoRepo = await MongoMemoryServer.create();
@@ -33,15 +30,15 @@ afterAll(async () => {
 });
 
 // Supertest auto auth mechanism
-export const autoSignin = async () => {
-  const email = 'test@test.com';
-  const password = '123456789';
+export const autoSignin = () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
+  const fackPayload = { id: id, email: 'test@test.com' };
 
-  const response = await request(app)
-    .post('/api/users/signup')
-    .send({ email, password })
-    .expect(200);
+  const userJwt = sign(fackPayload, process.env.JWT_KEY!);
 
-  const cookie = response.get('Set-Cookie');
-  return cookie;
+  const session = { jwt: userJwt };
+  const sessionJSON = JSON.stringify(session);
+  const base64Session = Buffer.from(sessionJSON).toString('base64');
+
+  return [`session=${base64Session}`];
 };
