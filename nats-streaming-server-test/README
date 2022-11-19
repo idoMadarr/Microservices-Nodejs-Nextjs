@@ -1,0 +1,39 @@
+This side project is just a test for learn how message comunication works with NATS Streaming Server
+The thing is, that our NATS service is inside our cluster (in a pod inside our kubernetes cluster)
+
+- Remember ? our nats pod found inside our cluster (nats-streaming-server-deply.yaml)
+
+So, we can connect our side project to kubernetes cluster by setting a new yaml file (+ clusterId service) and connect it to ingress-nginx
+OR, we can release a specific port from our cluster by:
+kubectl port-forward nats-depl-5f6977fd85-kwnfw 4222:4222
+
+After that, we can use our scripts (npm run publish/listen)
+
+- stan.subscribe('chanelName:name', 'group-name'); => open a new chanel
+  This mean that under chanel ticket:created we setting a sub-chanel
+
+---
+
+If we release 8222 port from our cluster by running:
+kubectl port-forward nats-depl-5f6977fd85-kwnfw 8222:8222
+and open our browser on http://localhost:8222/streaming we will get info about our nats status
+(http://localhost:8222/streaming/channelsz?subs=1) this is the url to get a details inside specific channel
+
+IMPORTANT: After restarting one of our listners, or in general after a client is off the channel, there will be a momentary time that NATS going
+to assume that the user is only a temporarly offline and is going to be back soon. Therefor, NATS going to see the user -in this part of time- as a Connected!
+just after the "ack_wait" NATS will understand that the user is really off, and update the subscriptions.
+
+NOTICE: Both ports 4222 and 8222 is set inside out yaml file.
+
+---
+
+NATS by defult save events in storage. this tend to help us in case we want to create new service and fill it with data that already exists
+in other serivces => .setDeliverAllAvailable()
+The this is, that NATS going to send all this data every signle time that the client re-connect. Therefore, we should use .setDurableName('orders-service');
+combined with 'orders-group'. This combination force nats to follow after the reviced conect for with client.
+
+---
+
+The defult behaviour that NATS offers is that any event that getting inside our subscription.on listener automaticly marked as APPROVED
+For most cases, is not want we want. we want to actully control in this lifecycle of the events. so in each middleware that we create
+we need to finish the event cycle with msg.ack();
