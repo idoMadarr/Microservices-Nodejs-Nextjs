@@ -6,6 +6,8 @@ console.clear();
 
 const generateClientId = () => randomBytes(4).toString('hex');
 
+// NOTICE: The client id is not represent a Client as User.
+// The client id should be specific in case we want to create multiply copies of single service
 const stan = nats.connect('ticketing', generateClientId(), {
   url: 'http://localhost:4222',
 });

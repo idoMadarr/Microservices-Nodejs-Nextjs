@@ -1,6 +1,9 @@
 import { RequestHandler } from 'express';
 import { Ticket } from '../models/Ticket';
 import { NotFoundError, UnauthorizedError } from '@adar-tickets/common';
+import { natsClient } from '../nats-wrapper/nats-client';
+import { TicketCreatedPublisher } from '../events/publisher/ticket-created-publisher';
+import { TicketUpdatedPublisher } from '../events/publisher/ticket-updated-publisher';
 
 export const createTicket: RequestHandler = async (req, res, next) => {
   const { title, price } = req.body;
@@ -10,6 +13,14 @@ export const createTicket: RequestHandler = async (req, res, next) => {
     userId: req.currentUser?.id!,
   });
   await createTicket.save();
+
+  new TicketCreatedPublisher(natsClient.getClient()).publish({
+    id: createTicket.id,
+    title: createTicket.title,
+    price: createTicket.price,
+    userId: createTicket.userId,
+  });
+
   res.status(200).send(createTicket);
 };
 
@@ -47,6 +58,13 @@ export const updateTicket: RequestHandler = async (req, res, next) => {
 
   existTicket.set({ title, price });
   await existTicket.save();
+
+  new TicketUpdatedPublisher(natsClient.getClient()).publish({
+    id: existTicket.id,
+    title: existTicket.title,
+    price: existTicket.price,
+    userId: existTicket.userId,
+  });
 
   res.status(200).send(existTicket);
 };

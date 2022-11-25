@@ -4,6 +4,10 @@ import { sign } from 'jsonwebtoken';
 
 let mongoRepo: any;
 
+// Tell NATS to mimic the event bus implementation by creating a Mock (__mocks__)
+// Otherwise, our tests failed beacuse they dont have a nats-client (stan) client.
+jest.mock('../nats-wrapper/nats-client');
+
 beforeAll(async () => {
   process.env.JWT_KEY = 'my_test_secret_key';
   mongoRepo = await MongoMemoryServer.create();
@@ -14,6 +18,8 @@ beforeAll(async () => {
 
 // Jest hook that run before any single test
 beforeEach(async () => {
+  // Clearing all mocks before every test
+  jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections();
 
   for (let collection of collections) {
