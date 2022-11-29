@@ -11,6 +11,7 @@ import {
   getTicket,
   updateTicket,
 } from '../controller/controller';
+
 const route = Router();
 
 // https://ticketing.dev/api/tickets/create-ticket
