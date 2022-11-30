@@ -1,10 +1,12 @@
 import { Schema, model, Model, Document, ObjectId } from 'mongoose';
+import { OrderStatus } from '@adar-tickets/common';
+import { TicketDoc } from './Ticket';
 
 interface OrderCredentials {
   userId: string;
-  status: string;
+  status: OrderStatus;
   expiresAt: Date;
-  ticket: any;
+  ticket: TicketDoc;
 }
 
 interface OrderModel extends Model<OrderDoc> {
@@ -14,9 +16,9 @@ interface OrderModel extends Model<OrderDoc> {
 interface OrderDoc extends Document {
   _id: ObjectId;
   userId: string;
-  status: string;
+  status: OrderStatus;
   expiresAt: Date;
-  ticket: any;
+  ticket: TicketDoc;
 }
 
 const orderSchema = new Schema(
@@ -28,6 +30,7 @@ const orderSchema = new Schema(
     status: {
       type: String,
       required: true,
+      default: OrderStatus.CREATED,
     },
     expiresAt: {
       type: Schema.Types.Date,

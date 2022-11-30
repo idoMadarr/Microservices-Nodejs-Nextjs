@@ -27,12 +27,16 @@ route.post(
 );
 
 // https://ticketing.dev/api/orders/:orderId
-route.get('/:orderId', getOrder);
+route.get('/:orderId', [currentUserMiddleware, authMiddleware], getOrder);
 
-// https://ticketing.dev/api/orders
-route.get('/', getOrders);
+// https://ticketing.dev/api/orders/
+route.get('/', [currentUserMiddleware, authMiddleware], getOrders);
 
 // https://ticketing.dev/api/orders/delete-order/:orderId
-route.delete('/delete-order/:orderId', deleteOrder);
+route.put(
+  '/delete-order/:orderId',
+  [currentUserMiddleware, authMiddleware],
+  deleteOrder
+);
 
 export { route as ordersRoutes };
