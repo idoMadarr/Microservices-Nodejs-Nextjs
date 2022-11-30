@@ -9,12 +9,12 @@ it('can only be accessed if the user is signed in', async () => {
 
 it('returns any status code when user is logged in', async () => {
   const cookie = autoSignin();
-  const respose = await request(app)
+  const response = await request(app)
     .post('/api/tickets/create-ticket')
     .set('Cookie', cookie)
     .send({});
 
-  expect(respose.status).not.toEqual(401);
+  expect(response.status).not.toEqual(401);
 });
 
 it('return error if an invalide title was provided', async () => {
