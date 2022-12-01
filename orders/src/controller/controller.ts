@@ -7,6 +7,8 @@ import {
   OrderStatus,
   UnauthorizedError,
 } from '@adar-tickets/common';
+import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
+import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
 import { natsClient } from '../nats-wrapper/nats-client';
 
 const EXPIRATION_SECONDS = 15 * 60;
@@ -38,6 +40,16 @@ export const createOrder: RequestHandler = async (req, res, next) => {
   });
   await newOrder.save();
 
+  new OrderCreatedPublisher(natsClient.getClient()).publish({
+    id: newOrder.id,
+    status: newOrder.status,
+    userId: newOrder.userId,
+    expiresAt: newOrder.expiresAt.toISOString(),
+    ticket: {
+      id: existingTicket.id,
+      price: existingTicket.price,
+    },
+  });
   res.status(200).send(newOrder);
 };
 
@@ -70,7 +82,7 @@ export const deleteOrder: RequestHandler = async (req, res, next) => {
   const userId = req.currentUser?.id;
   const orderId = req.params.orderId;
 
-  const order = await Order.findById(orderId);
+  const order = await Order.findById(orderId).populate('ticket');
 
   if (!order) {
     throw new NotFoundError();
@@ -83,5 +95,15 @@ export const deleteOrder: RequestHandler = async (req, res, next) => {
   order.status = OrderStatus.CANCELLED;
   await order.save();
 
+  new OrderCancelledPublisher(natsClient.getClient()).publish({
+    id: order.id,
+    status: order.status,
+    userId: order.userId,
+    expiresAt: order.expiresAt.toISOString(),
+    ticket: {
+      id: order.ticket.id,
+      price: order.ticket.price,
+    },
+  });
   res.status(200).send(order);
 };
