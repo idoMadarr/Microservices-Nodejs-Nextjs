@@ -1,4 +1,5 @@
 import request from 'supertest';
+import { Types } from 'mongoose';
 import { app } from '../app';
 import { autoSignin } from './setup';
 import { Ticket } from '../models/Ticket';
@@ -7,9 +8,21 @@ it('fetches orders for a particular user', async () => {
   const cookieForUserA = autoSignin();
   const cookieForUserB = autoSignin();
 
-  const firstTicket = Ticket.build({ title: 'First title', price: 80 });
-  const secondTicket = Ticket.build({ title: 'Second title', price: 90 });
-  const thirdTicket = Ticket.build({ title: 'Third title', price: 100 });
+  const firstTicket = Ticket.build({
+    id: new Types.ObjectId().toHexString(),
+    title: 'First title',
+    price: 80,
+  });
+  const secondTicket = Ticket.build({
+    id: new Types.ObjectId().toHexString(),
+    title: 'Second title',
+    price: 90,
+  });
+  const thirdTicket = Ticket.build({
+    id: new Types.ObjectId().toHexString(),
+    title: 'Third title',
+    price: 100,
+  });
   await firstTicket.save();
   await secondTicket.save();
   await thirdTicket.save();

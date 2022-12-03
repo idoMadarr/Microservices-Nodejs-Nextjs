@@ -45,6 +45,7 @@ export const createOrder: RequestHandler = async (req, res, next) => {
     status: newOrder.status,
     userId: newOrder.userId,
     expiresAt: newOrder.expiresAt.toISOString(),
+    version: newOrder.version,
     ticket: {
       id: existingTicket.id,
       price: existingTicket.price,
@@ -100,6 +101,7 @@ export const deleteOrder: RequestHandler = async (req, res, next) => {
     status: order.status,
     userId: order.userId,
     expiresAt: order.expiresAt.toISOString(),
+    version: order.version,
     ticket: {
       id: order.ticket.id,
       price: order.ticket.price,

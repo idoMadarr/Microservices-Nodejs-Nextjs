@@ -1,4 +1,5 @@
 import request from 'supertest';
+import { Types } from 'mongoose';
 import { app } from '../app';
 import { autoSignin } from './setup';
 import { Ticket } from '../models/Ticket';
@@ -6,7 +7,11 @@ import { Ticket } from '../models/Ticket';
 it('fetche specific order', async () => {
   const cookie = autoSignin();
 
-  const ticket = Ticket.build({ title: 'Valid title', price: 119 });
+  const ticket = Ticket.build({
+    id: new Types.ObjectId().toHexString(),
+    title: 'Valid title',
+    price: 119,
+  });
   await ticket.save();
 
   const response = await request(app)
@@ -25,7 +30,11 @@ it('return error in case the order is not belong to the user', async () => {
   const cookieA = autoSignin();
   const cookieB = autoSignin();
 
-  const ticket = Ticket.build({ title: 'Valid title', price: 119 });
+  const ticket = Ticket.build({
+    id: new Types.ObjectId().toHexString(),
+    title: 'Valid title',
+    price: 119,
+  });
   await ticket.save();
 
   const response = await request(app)

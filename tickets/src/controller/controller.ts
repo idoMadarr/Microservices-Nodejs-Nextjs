@@ -19,6 +19,7 @@ export const createTicket: RequestHandler = async (req, res, next) => {
     title: createTicket.title,
     price: createTicket.price,
     userId: createTicket.userId,
+    version: createTicket.version,
   });
 
   res.status(200).send(createTicket);
@@ -64,6 +65,7 @@ export const updateTicket: RequestHandler = async (req, res, next) => {
     title: existTicket.title,
     price: existTicket.price,
     userId: existTicket.userId,
+    version: existTicket.version,
   });
 
   res.status(200).send(existTicket);

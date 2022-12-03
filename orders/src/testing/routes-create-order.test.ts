@@ -20,7 +20,11 @@ it('return 404 if the ticket is not existing', async () => {
 it('return 400 if the ticket is already reserved', async () => {
   const cookie = autoSignin();
 
-  const ticket = Ticket.build({ title: 'Valid title', price: 119 });
+  const ticket = Ticket.build({
+    id: new Types.ObjectId().toHexString(),
+    title: 'Valid title',
+    price: 119,
+  });
   await ticket.save();
 
   const order = Order.build({
@@ -41,7 +45,11 @@ it('return 400 if the ticket is already reserved', async () => {
 it('reserves a ticket', async () => {
   const cookie = autoSignin();
 
-  const ticket = Ticket.build({ title: 'Valid title', price: 119 });
+  const ticket = Ticket.build({
+    id: new Types.ObjectId().toHexString(),
+    title: 'Valid title',
+    price: 119,
+  });
   await ticket.save();
 
   await request(app)
