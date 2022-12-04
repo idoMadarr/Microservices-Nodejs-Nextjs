@@ -20,10 +20,9 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEventType> {
     if (ticket) {
       ticket?.set({ title, price });
       await ticket?.save();
+      msg.ack();
     } else {
-      console.log('Ticket not found');
+      throw new Error('Ticket not found');
     }
-
-    msg.ack();
   }
 }

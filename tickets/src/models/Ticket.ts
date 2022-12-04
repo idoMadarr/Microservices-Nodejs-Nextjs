@@ -24,6 +24,7 @@ interface TicketDoc extends Document {
   createdAt: Date;
   updatedAt: Date;
   version: number;
+  orderId?: string; // orderId is not going to define when a ticket is created
 }
 
 const ticketSchema = new Schema(
@@ -39,6 +40,10 @@ const ticketSchema = new Schema(
     userId: {
       type: String,
       required: true,
+    },
+    orderId: {
+      type: String,
+      required: false,
     },
   },
   {

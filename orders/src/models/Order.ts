@@ -1,3 +1,4 @@
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 import { Schema, model, Model, Document, ObjectId } from 'mongoose';
 import { OrderStatus } from '@adar-tickets/common';
 import { TicketDoc } from './Ticket';
@@ -53,6 +54,9 @@ const orderSchema = new Schema(
     },
   }
 );
+
+orderSchema.set('versionKey', 'version');
+orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.build = (credentials: OrderCredentials) =>
   new Order(credentials);

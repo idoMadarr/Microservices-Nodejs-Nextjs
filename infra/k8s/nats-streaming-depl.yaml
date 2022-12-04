@@ -21,9 +21,9 @@ spec:
               '4222',
               '-m',
               '8222',
-              '-hbi', # How offen NATS is goind to make a hard bit request to each client
+              '-hbi', # How offen NATS is going to make a hard bit request to each client
               '5s',
-              '-hbt', # How long client shold be response before NATS assume that the user is disconneced for real
+              '-hbt', # How long client should be response before NATS assume that the user is disconneced for real
               '5s',
               '-hbf', # Number of times that a client can failed before NATS assume that the user is disconneced for real
               '2',
