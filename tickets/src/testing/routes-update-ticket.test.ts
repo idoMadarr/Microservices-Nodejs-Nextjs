@@ -2,6 +2,7 @@ import request from 'supertest';
 import { app } from '../app';
 import { autoSignin } from './setup';
 import { Types } from 'mongoose';
+import { Ticket } from '../models/Ticket';
 
 it('return 404 if the provided id is not exist', async () => {
   const cookie = autoSignin();
@@ -74,4 +75,24 @@ it('return 200 as ticket updated', async () => {
     .set('Cookie', cookie)
     .send({ title: 'Valid New Title', price: 119.9 })
     .expect(200);
+});
+
+it('rejecting reserved ticket', async () => {
+  const cookie = autoSignin();
+
+  const response = await request(app)
+    .post('/api/tickets/create-ticket')
+    .set('Cookie', cookie)
+    .send({ title: 'Valid Title', price: 99.9 })
+    .expect(200);
+
+  const ticket = await Ticket.findById(response.body.id);
+  ticket?.set({ orderId: new Types.ObjectId().toHexString() });
+  await ticket?.save();
+
+  await request(app)
+    .put(`/api/tickets/update/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({ title: 'Update Title', price: 120 })
+    .expect(400);
 });

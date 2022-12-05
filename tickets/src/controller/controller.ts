@@ -1,6 +1,10 @@
 import { RequestHandler } from 'express';
 import { Ticket } from '../models/Ticket';
-import { NotFoundError, UnauthorizedError } from '@adar-tickets/common';
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+} from '@adar-tickets/common';
 import { natsClient } from '../nats-wrapper/nats-client';
 import { TicketCreatedPublisher } from '../events/publisher/ticket-created-publisher';
 import { TicketUpdatedPublisher } from '../events/publisher/ticket-updated-publisher';
@@ -55,6 +59,10 @@ export const updateTicket: RequestHandler = async (req, res, next) => {
 
   if (existTicket.userId !== req.currentUser?.id!) {
     throw new UnauthorizedError();
+  }
+
+  if (existTicket.orderId) {
+    throw new BadRequestError('Cannot update a reserved ticket');
   }
 
   existTicket.set({ title, price });

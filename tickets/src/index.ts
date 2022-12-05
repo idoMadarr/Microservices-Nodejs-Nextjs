@@ -1,6 +1,8 @@
 import { app } from './app';
 import mongoose from 'mongoose';
 import { natsClient } from './nats-wrapper/nats-client';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
+import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
 const PORT = 3000;
 
 const initService = async () => {
@@ -23,6 +25,9 @@ const initService = async () => {
       console.log('NATS connection is closed');
       process.exit();
     });
+
+    new OrderCreatedListener(natsClient.getClient()).listen();
+    new OrderCancelledListener(natsClient.getClient()).listen();
 
     process.on('SIGINT', () => natsClient.client?.close());
 
