@@ -1,0 +1,5 @@
+This service is tend to send events when order is expired.
+The this is, that with NATS Streaming Server we cant fire events in specific time in the future
+For that we use bull package.
+Bull is a liberary that help us to send jobs (sort of events). the mechanisim works similar to NATS
+but it is not build to be stable and strong like nats.
