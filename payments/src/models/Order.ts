@@ -1,13 +1,13 @@
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
-import { Schema, model, Model, Document, ObjectId } from 'mongoose';
+import { Schema, model, Model, Document } from 'mongoose';
 import { OrderStatus } from '@adar-tickets/common';
-import { TicketDoc } from './Ticket';
 
 interface OrderCredentials {
+  id: string;
+  price: number;
   userId: string;
   status: OrderStatus;
-  expiresAt: Date;
-  ticket: TicketDoc;
+  version: number;
 }
 
 interface OrderModel extends Model<OrderDoc> {
@@ -15,32 +15,24 @@ interface OrderModel extends Model<OrderDoc> {
 }
 
 interface OrderDoc extends Document {
-  _id: ObjectId;
+  price: number;
   userId: string;
   status: OrderStatus;
-  expiresAt: Date;
-  ticket: TicketDoc;
   version: number;
 }
 
 const orderSchema = new Schema(
   {
+    price: {
+      type: Number,
+      required: true,
+    },
     userId: {
       type: String,
       required: true,
     },
     status: {
       type: String,
-      required: true,
-      default: OrderStatus.CREATED,
-    },
-    expiresAt: {
-      type: Schema.Types.Date,
-      required: false,
-    },
-    ticket: {
-      type: Schema.Types.ObjectId,
-      ref: 'Ticket',
       required: true,
     },
   },
@@ -58,6 +50,12 @@ orderSchema.set('versionKey', 'version');
 orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.build = (credentials: OrderCredentials) =>
-  new Order(credentials);
+  new Order({
+    _id: credentials.id,
+    price: credentials.price,
+    status: credentials.status,
+    userId: credentials.userId,
+    version: credentials.version,
+  });
 
 export const Order = model<OrderDoc, OrderModel>('Order', orderSchema);

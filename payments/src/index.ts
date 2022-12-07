@@ -1,9 +1,8 @@
 import { app } from './app';
 import mongoose from 'mongoose';
 import { natsClient } from './nats-wrapper/nats-client';
-import { TicketCreatedListener } from './events/listeners/ticket-created-listener';
-import { TicketUpdatedListener } from './events/listeners/ticket-updated-listener';
-import { ExpirationCompleteListener } from './events/listeners/expiration-complete-listener';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
+import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
 const PORT = 3000;
 
 const initService = async () => {
@@ -27,9 +26,8 @@ const initService = async () => {
       process.exit();
     });
 
-    new TicketCreatedListener(natsClient.getClient()).listen();
-    new TicketUpdatedListener(natsClient.getClient()).listen();
-    new ExpirationCompleteListener(natsClient.getClient()).listen();
+    new OrderCreatedListener(natsClient.getClient()).listen();
+    new OrderCancelledListener(natsClient.getClient()).listen();
 
     process.on('SIGINT', () => natsClient.client?.close());
 
