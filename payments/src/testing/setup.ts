@@ -36,9 +36,9 @@ afterAll(async () => {
 });
 
 // Supertest auto auth mechanism
-export const autoSignin = () => {
+export const autoSignin = (defaultUserId?: string) => {
   const id = new mongoose.Types.ObjectId().toHexString();
-  const fackPayload = { id: id, email: 'test@test.com' };
+  const fackPayload = { id: defaultUserId || id, email: 'test@test.com' };
 
   const userJwt = sign(fackPayload, process.env.JWT_KEY!);
 

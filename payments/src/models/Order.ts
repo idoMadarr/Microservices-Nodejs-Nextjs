@@ -14,6 +14,7 @@ interface OrderModel extends Model<OrderDoc> {
   build(credentials: OrderCredentials): OrderDoc;
 }
 
+// NOTICE: Here we are not specifing "id" beacuse the id referce to the id inside orders service
 interface OrderDoc extends Document {
   price: number;
   userId: string;

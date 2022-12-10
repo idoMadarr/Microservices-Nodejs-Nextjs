@@ -16,12 +16,13 @@ spec:
         - name: auth
           image: idoadar/auth:latest
           env:
-            # JWT_KEY=my_secret_key
+            # JWT_KEY=my_secret_key => secret key (kubectl get secrets)
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_KEY
+            # non-secret key
             - name: MONGO_URI
               value: 'mongodb://auth-mongo-srv:27017/auth'
 ---
