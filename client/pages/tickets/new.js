@@ -1,21 +1,20 @@
 import { useState } from 'react';
 import Router from 'next/router';
-import Link from 'next/link';
 import InputElement from '../../components/UIElements/InputElement/InputElement';
 import ButtonElement from '../../components/UIElements/ButtonElement/ButtonElement';
 import useRequest from '../../hooks/useRequest';
 import styles from '../../styles/Forms.module.css';
 
 const defaultState = {
-  email: '',
-  password: '',
+  title: '',
+  price: '',
 };
 
-const SigninScreen = () => {
+const NewTicketScreen = () => {
   const [formState, setFormState] = useState(defaultState);
   const [errors, sendRequest] = useRequest({
     method: 'post',
-    url: '/api/users/signin',
+    url: '/api/tickets/create-ticket',
     body: formState,
     onSuccess: () => Router.push('/'),
   });
@@ -28,30 +27,36 @@ const SigninScreen = () => {
     sendRequest();
   };
 
+  const onBlur = () => {
+    const value = parseFloat(formState.price);
+
+    if (isNaN(value)) return;
+
+    setFormState(prevState => ({ ...prevState, price: value.toFixed(2) }));
+  };
+
   return (
     <div className={styles['form-container']}>
-      <h3>Sign In</h3>
+      <h3>Create a ticket</h3>
       <InputElement
         inputType={'text'}
-        value={formState.email}
-        insertFunc={updateState.bind(this, 'email')}
-        name={'email'}
-        placeholder={'Email Address'}
+        value={formState.title}
+        insertFunc={updateState.bind(this, 'title')}
+        name={'title'}
+        placeholder={'Title'}
       />
       <InputElement
-        inputType={'password'}
-        value={formState.password}
-        insertFunc={updateState.bind(this, 'password')}
-        name={'password'}
-        placeholder={'Your Password'}
+        inputType={'text'}
+        value={formState.price}
+        insertFunc={updateState.bind(this, 'price')}
+        onBlur={onBlur}
+        name={'price'}
+        placeholder={'Set a price'}
       />
       {errors}
-      <ButtonElement title={'Login'} onClick={onSubmit} />
-      <p>
-        Dont have account yet? <Link href={'/auth/signup'}>Sign up</Link>
-      </p>
+      <ButtonElement title={'Send'} onClick={onSubmit} />
     </div>
   );
 };
 
-export default SigninScreen;
+export default NewTicketScreen;

@@ -53,3 +53,10 @@
 .input-element-main small {
   font-size: 0.8rem;
 }
+
+.wrapper-conainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

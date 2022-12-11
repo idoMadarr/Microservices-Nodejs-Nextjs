@@ -1,4 +1,11 @@
-const InputElement = ({ inputType, value, placeholder, name, insertFunc }) => {
+const InputElement = ({
+  inputType,
+  value,
+  placeholder,
+  name,
+  insertFunc,
+  onBlur,
+}) => {
   return (
     <div className={'input-element-main'}>
       <input
@@ -7,6 +14,7 @@ const InputElement = ({ inputType, value, placeholder, name, insertFunc }) => {
         placeholder={placeholder}
         name={name}
         onChange={insertFunc}
+        onBlur={onBlur}
         className={'input'}
       />
     </div>

@@ -11,7 +11,7 @@ const defaultState = {
   password: '',
 };
 
-const SignupForm = () => {
+const SignupScreen = () => {
   const [formState, setFormState] = useState(defaultState);
   const [errors, sendRequest] = useRequest({
     method: 'post',
@@ -54,4 +54,4 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default SignupScreen;
