@@ -9,10 +9,14 @@ const TicketScreen = ({ ticket }) => {
     body: {
       ticketId: ticket.id,
     },
-    onSuccess: order => Router.push('/orders/[orderId]', `/orders/${order.id}`),
+    onSuccess: order => {
+      if (order) {
+        Router.push('/orders/[orderId]', `/orders/${order.id}`);
+      }
+    },
   });
 
-  const createOrder = async () => {
+  const createOrder = async e => {
     await sendRequest();
   };
 

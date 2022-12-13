@@ -42,7 +42,7 @@ export const getTicket: RequestHandler = async (req, res, next) => {
 };
 
 export const getTickets: RequestHandler = async (req, res, next) => {
-  const tickets = await Ticket.find({});
+  const tickets = await Ticket.find({ orderId: undefined });
 
   res.status(200).send(tickets);
 };

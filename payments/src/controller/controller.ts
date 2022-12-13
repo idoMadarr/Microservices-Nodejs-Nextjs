@@ -18,7 +18,7 @@ export const createCharge: RequestHandler = async (req, res, next) => {
 
   if (!order) throw new NotFoundError();
 
-  if (order.userId !== req.currentUser!.id) throw new UnauthorizedError();
+  // if (order.userId !== req.currentUser!.id) throw new UnauthorizedError();
 
   if (order.status === OrderStatus.CANCELLED)
     throw new BadRequestError('Cannot pay for an cancelled order');
@@ -29,7 +29,7 @@ export const createCharge: RequestHandler = async (req, res, next) => {
     amount: order.price * 100,
     currency: 'usd',
     source: token,
-    description: 'Changing Payment',
+    description: 'Create Payment',
   });
 
   try {

@@ -21,6 +21,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEventType> {
       version,
     });
     await order.save();
+    console.log(order.status, 'PAYMENTS');
 
     msg.ack();
   }

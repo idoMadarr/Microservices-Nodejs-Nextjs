@@ -12,6 +12,14 @@ const Navbar = ({ currentUser }) => {
       href: '/auth/signup',
     },
     currentUser && {
+      label: 'Sell Tickets',
+      href: '/tickets/new',
+    },
+    currentUser && {
+      label: 'My Orders',
+      href: '/orders/user',
+    },
+    currentUser && {
       label: 'Sign out',
       href: '/auth/signout',
     },
@@ -21,6 +29,7 @@ const Navbar = ({ currentUser }) => {
     <nav className={styles['navbar-main']}>
       <Link href={'/'} style={{ fontSize: '1rem' }}>
         GitTix
+        {currentUser && <small> Hi {currentUser.email}</small>}
       </Link>
       <ul>
         {links.map(link => {

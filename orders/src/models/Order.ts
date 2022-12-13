@@ -6,7 +6,7 @@ import { TicketDoc } from './Ticket';
 interface OrderCredentials {
   userId: string;
   status: OrderStatus;
-  expiresAt: Date;
+  expiresAt: string | Date;
   ticket: TicketDoc;
 }
 
@@ -18,7 +18,7 @@ interface OrderDoc extends Document {
   _id: ObjectId;
   userId: string;
   status: OrderStatus;
-  expiresAt: Date;
+  expiresAt: string | Date;
   ticket: TicketDoc;
   version: number;
 }
@@ -35,7 +35,7 @@ const orderSchema = new Schema(
       default: OrderStatus.CREATED,
     },
     expiresAt: {
-      type: Schema.Types.Date,
+      type: String || Schema.Types.Date,
       required: false,
     },
     ticket: {

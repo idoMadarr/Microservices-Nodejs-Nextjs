@@ -25,12 +25,12 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
     order?.set({ status: OrderStatus.CANCELLED });
     await order.save();
 
-    // this.client is available insted of natClient wrapper beacuse we are in Listen environment
+    // this.client is available insted of natClient wrapper beacuse we are in Listener environment
     await new OrderCancelledPublisher(this.client).publish({
       id: order.id,
       status: order.status,
       userId: order.userId,
-      expiresAt: order.expiresAt.toISOString(),
+      expiresAt: order.expiresAt.toLocaleString(),
       version: order.version,
       ticket: {
         id: order.ticket.id,

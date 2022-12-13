@@ -21,7 +21,7 @@ export class PaymentCreatedLister extends Listener<PaymentCreatedType> {
     if (!updateOrder) throw new Error('Order not found');
 
     updateOrder.set({ status: OrderStatus.COMPLETED });
-    updateOrder.save();
+    await updateOrder.save();
 
     msg.ack();
   }

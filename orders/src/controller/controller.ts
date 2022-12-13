@@ -30,13 +30,20 @@ export const createOrder: RequestHandler = async (req, res, next) => {
   }
 
   // Calculate expiration date (15 min)
-  const expiration = new Date();
+  const currentDate = new Date().toLocaleString('he-IL', {
+    timeZone: 'Asia/jerusalem',
+  });
+  const expiration = new Date(currentDate);
   expiration.setSeconds(expiration.getSeconds() + EXPIRATION_SECONDS);
+
+  const expiresAt = expiration.toLocaleString('he-IL', {
+    timeZone: 'Asia/jerusalem',
+  });
 
   const newOrder = Order.build({
     userId: req.currentUser?.id!,
     status: OrderStatus.CREATED,
-    expiresAt: expiration,
+    expiresAt,
     ticket: existingTicket,
   });
   await newOrder.save();
@@ -45,7 +52,7 @@ export const createOrder: RequestHandler = async (req, res, next) => {
     id: newOrder.id,
     status: newOrder.status,
     userId: newOrder.userId,
-    expiresAt: newOrder.expiresAt.toISOString(),
+    expiresAt: newOrder.expiresAt.toLocaleString(),
     version: newOrder.version,
     ticket: {
       id: existingTicket.id,
@@ -65,9 +72,12 @@ export const getOrder: RequestHandler = async (req, res, next) => {
     throw new NotFoundError();
   }
 
-  if (order.userId !== userId) {
-    throw new UnauthorizedError();
-  }
+  console.log(req.currentUser, 'userId');
+  console.log(id, 'id');
+
+  // if (order.userId !== userId) {
+  //   throw new UnauthorizedError();
+  // }
 
   res.status(200).send(order);
 };
@@ -101,7 +111,7 @@ export const deleteOrder: RequestHandler = async (req, res, next) => {
     id: order.id,
     status: order.status,
     userId: order.userId,
-    expiresAt: order.expiresAt.toISOString(),
+    expiresAt: order.expiresAt.toLocaleString(),
     version: order.version,
     ticket: {
       id: order.ticket.id,
