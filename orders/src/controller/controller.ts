@@ -5,7 +5,6 @@ import {
   NotFoundError,
   BadRequestError,
   OrderStatus,
-  UnauthorizedError,
 } from '@adar-tickets/common';
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
 import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
@@ -63,7 +62,6 @@ export const createOrder: RequestHandler = async (req, res, next) => {
 };
 
 export const getOrder: RequestHandler = async (req, res, next) => {
-  const userId = req.currentUser?.id;
   const id = req.params.orderId;
 
   const order = await Order.findOne({ id }).populate('ticket');
@@ -71,13 +69,6 @@ export const getOrder: RequestHandler = async (req, res, next) => {
   if (!order) {
     throw new NotFoundError();
   }
-
-  console.log(req.currentUser, 'userId');
-  console.log(id, 'id');
-
-  // if (order.userId !== userId) {
-  //   throw new UnauthorizedError();
-  // }
 
   res.status(200).send(order);
 };
@@ -98,10 +89,6 @@ export const deleteOrder: RequestHandler = async (req, res, next) => {
 
   if (!order) {
     throw new NotFoundError();
-  }
-
-  if (order.userId !== userId) {
-    throw new UnauthorizedError();
   }
 
   order.status = OrderStatus.CANCELLED;

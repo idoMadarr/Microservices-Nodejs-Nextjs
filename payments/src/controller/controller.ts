@@ -3,7 +3,6 @@ import { Order } from '../models/Order';
 import { Payment } from '../models/Payment';
 import {
   NotFoundError,
-  UnauthorizedError,
   BadRequestError,
   OrderStatus,
 } from '@adar-tickets/common';
@@ -17,8 +16,6 @@ export const createCharge: RequestHandler = async (req, res, next) => {
   const order = await Order.findById(orderId);
 
   if (!order) throw new NotFoundError();
-
-  // if (order.userId !== req.currentUser!.id) throw new UnauthorizedError();
 
   if (order.status === OrderStatus.CANCELLED)
     throw new BadRequestError('Cannot pay for an cancelled order');
