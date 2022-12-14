@@ -5,4 +5,4 @@ expiration/node_modules
 common/node_modules
 orders/node_modules
 payments/node_modules
-nats-streaming-server-test/node_modules
+nats-streaming-server-test
